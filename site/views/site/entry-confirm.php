@@ -2,12 +2,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 ?>
-
-<?php $form = ActiveForm::begin(); ?>
-  <?= $form->field($model, 'name') ?>
-  <?= $form->field($model, 'email') ?>
-
-  <div class="form-group">
-      <?= Html::submitButton('送信',['class' => 'btn btn-primary']) ?>
-  </div>
-<?php ActiveForm::end() ?>
+<p>あなたは次の情報を入力しました</p>
+<ul>
+    <li><label>名前</label>: <?= Html::encode($model->name) ?></li>
+    <li><label>メール</label>: <?= Html::encode($model->email) ?></li>
+</ul>
