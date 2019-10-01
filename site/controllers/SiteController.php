@@ -65,6 +65,16 @@ class SiteController extends Controller
     }
 
     /**
+     * http://192.168.33.111/index.php?r=site%2Fgoodbye-cruel-world でアクセス可。
+     * @return string
+     */
+    public function actionGoodbyeCruelWorld()
+    {
+        $message = "Goodbye cruel world.";
+        return $this->render('goodbye', ['message' => $message]);
+    }
+
+    /**
      * Login action.
      *
      * @return Response|string
