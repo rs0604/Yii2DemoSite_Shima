@@ -1,0 +1,36 @@
+---
+- hosts: all
+  gather_facts: yes
+  connection: local
+
+  pre_tasks:
+    - set_fact:
+        ansible_distribution_major_version: "7"
+    - name: Install the MySQL repo.
+      yum:
+        name: http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Override variables for MySQL (RedHat).
+      set_fact:
+        mysql_daemon: mysqld
+        mysql_packages: ['mysql-server']
+        mysql_log_error: /var/log/mysqld.err
+        mysql_syslog_tag: mysqld
+        mysql_pid_file: /var/run/mysqld/mysqld.pid
+        mysql_socket: /var/lib/mysql/mysql.sock
+      when: ansible_os_family == "RedHat"
+
+  vars_files:
+    - vars/main.yml
+
+  roles:
+    - geerlingguy.repo-epel
+    - geerlingguy.repo-remi
+    - geerlingguy.mysql
+    - geerlingguy.nginx
+    - geerlingguy.php
+    - geerlingguy.php-mysql
+    - geerlingguy.composer
+    - shima.yii2install

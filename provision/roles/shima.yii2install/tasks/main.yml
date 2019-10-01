@@ -1,0 +1,44 @@
+---
+- name: install unzip (requirement)
+  yum:
+    name: unzip
+    state: latest
+
+- name: install git (requirement)
+  yum:
+    name: git
+    state: latest
+    
+#
+#- name: install yii2 vendor/ files
+#  composer:
+#    command: install
+#    executable: /usr/local/bin/composer
+#    working_dir: /vagrant/site
+
+- name: site directory make modifiable by php
+  file: path=/vagrant/site owner=nginx group=nginx mode=777 recurse=yes
+
+- name: session directory make modifiable by nginx
+  file: path=/var/lib/php/session owner=nginx group=nginx recurse=yes
+
+- name: modify php-fpm config file
+  replace:
+    dest: /etc/php-fpm.d/www.conf
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+  with_items:
+    - { regexp: "^;listen.owner = nobody", replace: "listen.owner = nginx" }
+    - { regexp: "^;listen.group = nobody", replace: "listen.group = nginx" }
+
+- name: restart php-cbf
+  systemd:
+    name: php-fpm.service
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+
+- name: install vim
+  yum:
+    name: vim
+    state: latest
