@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 # 初回起動時のみ、下記をtrueに。
-RSYNC_ENABLED = false
+RSYNC_ENABLED = true
 
 Vagrant.configure("2") do |config|
   config.vm.box = "geerlingguy/centos7"
